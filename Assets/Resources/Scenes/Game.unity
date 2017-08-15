@@ -189,6 +189,21 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114234934910993312, guid: 687a5504221dedf4180377e7a5e3444a,
+        type: 2}
+      propertyPath: walkSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114234934910993312, guid: 687a5504221dedf4180377e7a5e3444a,
+        type: 2}
+      propertyPath: runSpeed
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 114234934910993312, guid: 687a5504221dedf4180377e7a5e3444a,
+        type: 2}
+      propertyPath: airdashSpeed
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 687a5504221dedf4180377e7a5e3444a, type: 2}
   m_IsPrefabParent: 0

@@ -6,7 +6,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 
-    public float speed;
+    public float walkSpeed;
+    public float runSpeed;
+    public float airdashSpeed;
     public bool isFacingRight;
 
     private Rigidbody2D body;
@@ -58,13 +60,13 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.WALKING_BACKWARD:
                 {
-                    float delta = (isFacingRight ? -1 : 1) * speed * Time.deltaTime;
+                    float delta = (isFacingRight ? -1 : 1) * walkSpeed * Time.deltaTime;
                     transform.position += new Vector3(delta, 0);
                 }
                 break;
             case PlayerState.WALKING_FORWARD:
                 {
-                    float delta = (isFacingRight ? 1 : -1) * speed * Time.deltaTime;
+                    float delta = (isFacingRight ? 1 : -1) * walkSpeed * Time.deltaTime;
                     transform.position += new Vector3(delta, 0);
                 }
                 break;

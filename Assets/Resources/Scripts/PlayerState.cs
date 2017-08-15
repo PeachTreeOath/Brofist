@@ -5,7 +5,9 @@ using UnityEngine;
 public enum PlayerState
 {
     STANDING,
+    CROUCHING,
     BLOCKING,
+    CROUCH_BLOCKING,
     WALKING_BACKWARD,
     WALKING_FORWARD,
     DASHING_BACK,

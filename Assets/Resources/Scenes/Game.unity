@@ -276,6 +276,48 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb2df29c64594d147a167dbcee8a71a1, type: 2}
   m_IsPrefabParent: 0
+--- !u!1001 &570403663
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4328388827523802, guid: 7eca16963c90f374d9877f2e7d2a2137, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4328388827523802, guid: 7eca16963c90f374d9877f2e7d2a2137, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4328388827523802, guid: 7eca16963c90f374d9877f2e7d2a2137, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4328388827523802, guid: 7eca16963c90f374d9877f2e7d2a2137, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4328388827523802, guid: 7eca16963c90f374d9877f2e7d2a2137, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4328388827523802, guid: 7eca16963c90f374d9877f2e7d2a2137, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4328388827523802, guid: 7eca16963c90f374d9877f2e7d2a2137, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4328388827523802, guid: 7eca16963c90f374d9877f2e7d2a2137, type: 2}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 7eca16963c90f374d9877f2e7d2a2137, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1001 &1428135575
 Prefab:
   m_ObjectHideFlags: 0
@@ -367,7 +409,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.60094076, g: 0.6985294, b: 0.6904531, a: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0

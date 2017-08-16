@@ -11,6 +11,9 @@ public class PlayerController : MonoBehaviour
     public float airdashSpeed;
     public bool isFacingRight;
 
+    public int maxHp = 1000;
+    public int currHp;
+
     private Rigidbody2D body;
     private PlayerState state;
 
@@ -19,6 +22,7 @@ public class PlayerController : MonoBehaviour
     {
         body = GetComponent<Rigidbody2D>();
         state = PlayerState.STANDING;
+        currHp = maxHp;
     }
 
     // Update is called once per frame
@@ -26,6 +30,13 @@ public class PlayerController : MonoBehaviour
     {
         UpdateState();
         UpdatePosition();
+    }
+
+    public void TakeDamage(int damage)
+    {
+        currHp -= damage;
+        if (currHp < 0)
+            currHp = 0;
     }
 
     private void UpdateState()

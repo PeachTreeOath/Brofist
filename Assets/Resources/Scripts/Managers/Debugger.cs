@@ -13,5 +13,12 @@ public class Debugger : Singleton<Debugger> {
                 player.TakeDamage(100);
             }
         }
-	}
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            foreach (PlayerController player in Object.FindObjectsOfType<PlayerController>())
+            {
+                player.UseMeter(10);
+            }
+        }
+    }
 }

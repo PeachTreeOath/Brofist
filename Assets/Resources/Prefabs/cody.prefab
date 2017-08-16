@@ -20,6 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4585522312181298}
   - component: {fileID: 212370995769891844}
+  - component: {fileID: 114225368838042962}
+  - component: {fileID: 61886690598219158}
+  - component: {fileID: 50377219147142932}
   m_Layer: 0
   m_Name: cody
   m_TagString: Untagged
@@ -40,6 +43,71 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &50377219147142932
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1664645588828186}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!61 &61886690598219158
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1664645588828186}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.49, y: 2.1}
+    newSize: {x: 1.49, y: 2.1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.44, y: 2.5}
+  m_EdgeRadius: 0
+--- !u!114 &114225368838042962
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1664645588828186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0f3f2ca32754a4688cd3f31346dd29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 3
+  walkSpeed: 5
+  runSpeed: 12
+  airdashSpeed: 8
+  maxHp: 1000
+  maxMeter: 100
+  currHp: 0
+  currMeter: 0
+  isFacingRight: 1
 --- !u!212 &212370995769891844
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public int maxHp = 1000;
     public int currHp;
 
+    public GameObject hpBar;
     private Rigidbody2D body;
     private PlayerState state;
 
@@ -30,6 +31,13 @@ public class PlayerController : MonoBehaviour
     {
         UpdateState();
         UpdatePosition();
+        
+    }
+
+    public void SetHpBar()
+    {
+        float missingHp = (float)currHp / (float)maxHp;
+        hpBar.transform.localScale = new Vector3(missingHp, hpBar.transform.localScale.y, hpBar.transform.localScale.z);
     }
 
     public void TakeDamage(int damage)
@@ -37,6 +45,7 @@ public class PlayerController : MonoBehaviour
         currHp -= damage;
         if (currHp < 0)
             currHp = 0;
+        SetHpBar();
     }
 
     private void UpdateState()

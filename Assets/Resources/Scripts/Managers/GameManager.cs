@@ -29,6 +29,12 @@ public class GameManager : Singleton<GameManager> {
     {
         if (playerController.id == 1)
             p1 = playerController;
+        if (playerController.id == 2)
+            p2 = playerController;
+        if (playerController.id == 3)
+            p3 = playerController;
+        if (playerController.id == 4)
+            p4 = playerController;
     }
 
     public void Swap(PlayerController playerController)

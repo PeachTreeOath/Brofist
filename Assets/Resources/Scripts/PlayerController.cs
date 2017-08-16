@@ -5,14 +5,18 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
+    [Header("Character Stats")]
+    public int id; // Players 1 and 2 are on same team, 3 and 4 on the other
     public float walkSpeed;
     public float runSpeed;
     public float airdashSpeed;
-    public bool isFacingRight;
-
     public int maxHp = 1000;
+    public int maxMeter = 100;
+
+    [Header("State Variables")]
     public int currHp;
+    public int currMeter;
+    public bool isFacingRight;
 
     private Rigidbody2D body;
     private PlayerState state;
@@ -20,14 +24,20 @@ public class PlayerController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        GameManager.instance.RegisterPlayer(this);
         body = GetComponent<Rigidbody2D>();
         state = PlayerState.STANDING;
         currHp = maxHp;
+        currMeter = maxMeter;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.T))
+        {
+            GameManager.instance.Swap(this);
+        }
         UpdateState();
         UpdatePosition();
     }

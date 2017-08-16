@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.T))
         {
             GameManager.instance.Swap(this);
         }
@@ -49,16 +49,23 @@ public class PlayerController : MonoBehaviour
             currHp = 0;
     }
 
+    public void UseMeter(int meter)
+    {
+        currMeter -= meter;
+        if (currMeter < 0)
+            currMeter = 0;
+    }
+
     private void UpdateState()
     {
-        if (Input.GetAxisRaw("Horizontal") > 0)
+        if (Input.GetAxisRaw("Horizontal" + id) > 0)
         {
             if (isFacingRight)
                 state = PlayerState.WALKING_FORWARD;
             else
                 state = PlayerState.WALKING_BACKWARD;
         }
-        else if (Input.GetAxisRaw("Horizontal") < 0)
+        else if (Input.GetAxisRaw("Horizontal" + id) < 0)
         {
             if (isFacingRight)
                 state = PlayerState.WALKING_BACKWARD;

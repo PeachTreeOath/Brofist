@@ -8,6 +8,11 @@ public class GameManager : Singleton<GameManager> {
     private PlayingField topField;
     private PlayingField bottomField;
 
+    private PlayerController p1;
+    private PlayerController p2;
+    private PlayerController p3;
+    private PlayerController p4;
+
     protected override void Awake () {
         base.Awake();
 
@@ -22,7 +27,8 @@ public class GameManager : Singleton<GameManager> {
 
     public void RegisterPlayer(PlayerController playerController)
     {
-        throw new NotImplementedException();
+        if (playerController.id == 1)
+            p1 = playerController;
     }
 
     public void Swap(PlayerController playerController)

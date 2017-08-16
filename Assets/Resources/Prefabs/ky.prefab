@@ -99,9 +99,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a0f3f2ca32754a4688cd3f31346dd29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 1
   walkSpeed: 5
   runSpeed: 12
   airdashSpeed: 8
+  maxHp: 1000
+  maxMeter: 100
+  currHp: 0
+  currMeter: 0
   isFacingRight: 1
 --- !u!212 &212483586158845032
 SpriteRenderer:

@@ -17,10 +17,15 @@ public class PlayerController : MonoBehaviour
     public int currHp;
     public int currMeter;
     public bool isFacingRight;
+    public bool isJumping;
 
     public GameObject hpBar;
     private Rigidbody2D body;
+    [SerializeField]
     private PlayerState state;
+    private float jumpStartTime;
+    private float jumpDuration = 1f;
+    private float groundHeight;
 
     // Use this for initialization
     void Start()
@@ -30,6 +35,7 @@ public class PlayerController : MonoBehaviour
         state = PlayerState.STANDING;
         currHp = maxHp;
         currMeter = maxMeter;
+        groundHeight = transform.localPosition.y;
     }
 
     // Update is called once per frame
@@ -41,7 +47,6 @@ public class PlayerController : MonoBehaviour
         }
         UpdateState();
         UpdatePosition();
-
     }
 
     public void SetHpBar()
@@ -65,9 +70,41 @@ public class PlayerController : MonoBehaviour
             currMeter = 0;
     }
 
+    /// <summary>
+    /// TODO: Replace with mecanim FSM
+    /// </summary>
     private void UpdateState()
     {
-        if (Input.GetAxisRaw("Horizontal" + id) > 0)
+        if (isJumping)
+        {
+            return;
+        }
+
+        if (Input.GetAxisRaw("Vertical" + id) > 0 && Input.GetAxisRaw("Horizontal" + id) > 0)
+        {
+            isJumping = true;
+            jumpStartTime = Time.time;
+            if (isFacingRight)
+                state = PlayerState.JUMPING_FORWARD;
+            else
+                state = PlayerState.JUMPING_BACKWARD;
+        }
+        else if (Input.GetAxisRaw("Vertical" + id) > 0 && Input.GetAxisRaw("Horizontal" + id) < 0)
+        {
+            isJumping = true;
+            jumpStartTime = Time.time;
+            if (isFacingRight)
+                state = PlayerState.JUMPING_BACKWARD;
+            else
+                state = PlayerState.JUMPING_FORWARD;
+        }
+        else if (Input.GetAxisRaw("Vertical" + id) > 0)
+        {
+            isJumping = true;
+            jumpStartTime = Time.time;
+            state = PlayerState.JUMPING_UP;
+        }
+        else if (Input.GetAxisRaw("Horizontal" + id) > 0)
         {
             if (isFacingRight)
                 state = PlayerState.WALKING_FORWARD;
@@ -112,10 +149,58 @@ public class PlayerController : MonoBehaviour
             case PlayerState.DASHING_FORWARD:
                 break;
             case PlayerState.JUMPING_UP:
+                {
+                    float newX = transform.localPosition.x;
+                    float newY;
+                    float jumpTime = Time.time - jumpStartTime;
+                    float jumpHeight = GetJumpHeight(jumpTime);
+                    if (jumpTime >= jumpDuration)
+                    {
+                        isJumping = false;
+                        newY = groundHeight;
+                    }
+                    else
+                    {
+                        newY = groundHeight + jumpHeight;
+                    }
+                    transform.localPosition = new Vector2(newX, newY);
+                }
                 break;
-            case PlayerState.JUMPING_BACK:
+            case PlayerState.JUMPING_BACKWARD:
+                {
+                    float newX = transform.localPosition.x + (isFacingRight ? -1 : 1) * walkSpeed * Time.deltaTime;
+                    float newY;
+                    float jumpTime = Time.time - jumpStartTime;
+                    float jumpHeight = GetJumpHeight(jumpTime);
+                    if (jumpTime >= jumpDuration)
+                    {
+                        isJumping = false;
+                        newY = groundHeight;
+                    }
+                    else
+                    {
+                        newY = groundHeight + jumpHeight;
+                    }
+                    transform.localPosition = new Vector2(newX, newY);
+                }
                 break;
             case PlayerState.JUMPING_FORWARD:
+                {
+                    float newX = transform.localPosition.x + (isFacingRight ? 1 : -1) * walkSpeed * Time.deltaTime;
+                    float newY;
+                    float jumpTime = Time.time - jumpStartTime;
+                    float jumpHeight = GetJumpHeight(jumpTime);
+                    if (jumpTime >= jumpDuration)
+                    {
+                        isJumping = false;
+                        newY = groundHeight;
+                    }
+                    else
+                    {
+                        newY = groundHeight + jumpHeight;
+                    }
+                    transform.localPosition = new Vector2(newX, newY);
+                }
                 break;
             case PlayerState.DASH_JUMPING_BACK:
                 break;
@@ -130,5 +215,13 @@ public class PlayerController : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    private float GetJumpHeight(float time)
+    {
+        float a = 10f;
+        float diff = time - 0.5f;
+        float height = (-a * diff * diff) + 3f;
+        return Mathf.Clamp(height, 0, 100);
     }
 }

@@ -35,13 +35,13 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetButtonDown("Swap" + id))
         {
             GameManager.instance.Swap(this);
         }
         UpdateState();
         UpdatePosition();
-        
+
     }
 
     public void SetHpBar()

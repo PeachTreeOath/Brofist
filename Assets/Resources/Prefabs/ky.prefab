@@ -100,9 +100,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 1
-  walkSpeed: 0.01
-  runSpeed: 0.02
-  airdashSpeed: 0.015
+  walkSpeed: 0.1
+  runSpeed: 0.2
+  airdashSpeed: 0.15
   maxHp: 1000
   maxMeter: 100
   currHp: 0

@@ -23,6 +23,8 @@ public class PlayerController : FrameDependentEntity
     private Rigidbody2D body;
     [SerializeField]
     private PlayerState state;
+    private Queue<PlayerInputFrame> inputBuffer = new Queue<PlayerInputFrame>(30); //TODO: Make this queue not delete inputs if performance becomes an issue
+    private PlayerInputFrame currentInputFrame; // Convenience var to track last input
     private float jumpStartTime;
     private float jumpDuration = 1f;
     private float groundHeight;
@@ -47,8 +49,9 @@ public class PlayerController : FrameDependentEntity
         {
             GameManager.instance.Swap(this);
         }
-        UpdateState();
-        UpdatePosition();
+        UpdateInputBuffer(); // Grab all inputs from player this frame and queue input buffer
+        UpdateState(); // Change player state based on inputs
+        UpdatePosition(); // Move player based on state if needed
     }
 
     public void SetHpBar()
@@ -72,6 +75,33 @@ public class PlayerController : FrameDependentEntity
             currMeter = 0;
     }
 
+    private void UpdateInputBuffer()
+    {
+        PlayerInputFrame inputFrame = new PlayerInputFrame();
+
+        if (Input.GetAxisRaw("Vertical" + id) > 0)
+            inputFrame.AddToFrame(PlayerInputButton.UP);
+        if (Input.GetAxisRaw("Vertical" + id) < 0)
+            inputFrame.AddToFrame(PlayerInputButton.DOWN);
+        if (Input.GetAxisRaw("Horizontal" + id) < 0)
+            inputFrame.AddToFrame(PlayerInputButton.LEFT);
+        if (Input.GetAxisRaw("Horizontal" + id) > 0)
+            inputFrame.AddToFrame(PlayerInputButton.RIGHT);
+        if (Input.GetButton("A" + id))
+            inputFrame.AddToFrame(PlayerInputButton.A);
+        if (Input.GetButton("B" + id))
+            inputFrame.AddToFrame(PlayerInputButton.B);
+        if (Input.GetButton("C" + id))
+            inputFrame.AddToFrame(PlayerInputButton.C);
+        if (Input.GetButton("D" + id))
+            inputFrame.AddToFrame(PlayerInputButton.D);
+        if (Input.GetButton("Swap" + id))
+            inputFrame.AddToFrame(PlayerInputButton.SWAP);
+
+        inputBuffer.Enqueue(inputFrame);
+        currentInputFrame = inputFrame;
+    }
+
     /// <summary>
     /// TODO: Replace with mecanim FSM
     /// </summary>
@@ -82,38 +112,36 @@ public class PlayerController : FrameDependentEntity
             return;
         }
 
-        if (Input.GetAxisRaw("Vertical" + id) > 0 && Input.GetAxisRaw("Horizontal" + id) > 0)
+        if (currentInputFrame.IsButtonPressed(PlayerInputButton.UP) && currentInputFrame.IsButtonPressed(PlayerInputButton.RIGHT))
         {
             isJumping = true;
             jumpStartTime = Time.time;
-            if (isFacingRight)
-                state = PlayerState.JUMPING_FORWARD;
+
+            if (currentInputFrame.IsButtonPressed(PlayerInputButton.RIGHT))
+            {
+                if (isFacingRight)
+                    state = PlayerState.JUMPING_FORWARD;
+                else
+                    state = PlayerState.JUMPING_BACKWARD;
+            }
+            else if (currentInputFrame.IsButtonPressed(PlayerInputButton.LEFT))
+            {
+                if (isFacingRight)
+                    state = PlayerState.JUMPING_BACKWARD;
+                else
+                    state = PlayerState.JUMPING_FORWARD;
+            }
             else
-                state = PlayerState.JUMPING_BACKWARD;
+                state = PlayerState.JUMPING_UP;
         }
-        else if (Input.GetAxisRaw("Vertical" + id) > 0 && Input.GetAxisRaw("Horizontal" + id) < 0)
-        {
-            isJumping = true;
-            jumpStartTime = Time.time;
-            if (isFacingRight)
-                state = PlayerState.JUMPING_BACKWARD;
-            else
-                state = PlayerState.JUMPING_FORWARD;
-        }
-        else if (Input.GetAxisRaw("Vertical" + id) > 0)
-        {
-            isJumping = true;
-            jumpStartTime = Time.time;
-            state = PlayerState.JUMPING_UP;
-        }
-        else if (Input.GetAxisRaw("Horizontal" + id) > 0)
+        else if (currentInputFrame.IsButtonPressed(PlayerInputButton.RIGHT))
         {
             if (isFacingRight)
                 state = PlayerState.WALKING_FORWARD;
             else
                 state = PlayerState.WALKING_BACKWARD;
         }
-        else if (Input.GetAxisRaw("Horizontal" + id) < 0)
+        else if (currentInputFrame.IsButtonPressed(PlayerInputButton.LEFT))
         {
             if (isFacingRight)
                 state = PlayerState.WALKING_BACKWARD;

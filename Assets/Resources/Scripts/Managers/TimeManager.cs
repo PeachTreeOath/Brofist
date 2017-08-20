@@ -14,14 +14,14 @@ public class TimeManager : Singleton<TimeManager> {
 	// Use this for initialization
 	void Start () {
         gameStartTime = Time.time;
-        frameInMs = 0.001f * 60 / fps;
+        frameInMs = 1 / (float)fps;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         int currentFrameCount = (int)(Time.time / frameInMs);
         int framesSinceLastUpdate = currentFrameCount - lastFrameCount;
-
+        Debug.Log(framesSinceLastUpdate);
         for (int i = 0; i < framesSinceLastUpdate; i++)
         {
             foreach(FrameDependentEntity entity in entityList)

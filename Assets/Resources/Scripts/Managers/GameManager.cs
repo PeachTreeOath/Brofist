@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
+    public Vector2 playerStartPosition; // x and y need to be negative (p1 relative position on playing field)
+    [HideInInspector]
+    public float groundLevel;
 
     private PlayingField topField;
     private PlayingField bottomField;
@@ -20,6 +23,7 @@ public class GameManager : Singleton<GameManager>
     {
         base.Awake();
 
+        groundLevel = playerStartPosition.y;
         topField = GameObject.Find("PlayingFieldA").GetComponent<PlayingField>();
         bottomField = GameObject.Find("PlayingFieldB").GetComponent<PlayingField>();
     }
@@ -36,21 +40,25 @@ public class GameManager : Singleton<GameManager>
         {
             p1 = playerController;
             topField.AssignPlayer(p1);
+            p1.transform.localPosition = playerStartPosition;
         }
         if (playerController.id == 2)
         {
             p2 = playerController;
             bottomField.AssignPlayer(p2);
+            p2.transform.localPosition = playerStartPosition;
         }
         if (playerController.id == 3)
         {
             p3 = playerController;
             topField.AssignPlayer(p3);
+            p3.transform.localPosition = new Vector2(-playerStartPosition.x, playerStartPosition.y);
         }
         if (playerController.id == 4)
         {
             p4 = playerController;
             bottomField.AssignPlayer(p4);
+            p4.transform.localPosition = new Vector2(-playerStartPosition.x, playerStartPosition.y);
         }
 
         // Populate partner map once all players registered

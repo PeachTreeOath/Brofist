@@ -76,3 +76,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73e2ed5def96fdc49836733bad3367c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStartPosition: {x: -8, y: -4.5}
+  groundLevel: 0

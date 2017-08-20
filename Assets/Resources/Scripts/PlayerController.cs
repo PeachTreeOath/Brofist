@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : FrameDependentEntity
 {
     [Header("Character Stats")]
     public int id; // Players 1 and 2 are on same team, 3 and 4 on the other
@@ -28,8 +28,10 @@ public class PlayerController : MonoBehaviour
     private float groundHeight;
 
     // Use this for initialization
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+
         GameManager.instance.RegisterPlayer(this);
         body = GetComponent<Rigidbody2D>();
         state = PlayerState.STANDING;
@@ -39,7 +41,7 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public override void UpdateFrame()
     {
         if (Input.GetButtonDown("Swap" + id))
         {
@@ -51,7 +53,7 @@ public class PlayerController : MonoBehaviour
 
     public void SetHpBar()
     {
-        float missingHp = (float)currHp / (float)maxHp;
+        float missingHp = currHp / maxHp;
         hpBar.transform.localScale = new Vector3(missingHp, hpBar.transform.localScale.y, hpBar.transform.localScale.z);
     }
 
@@ -134,13 +136,13 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.WALKING_BACKWARD:
                 {
-                    float delta = (isFacingRight ? -1 : 1) * walkSpeed * Time.deltaTime;
+                    float delta = (isFacingRight ? -1 : 1) * walkSpeed;
                     transform.position += new Vector3(delta, 0);
                 }
                 break;
             case PlayerState.WALKING_FORWARD:
                 {
-                    float delta = (isFacingRight ? 1 : -1) * walkSpeed * Time.deltaTime;
+                    float delta = (isFacingRight ? 1 : -1) * walkSpeed;
                     transform.position += new Vector3(delta, 0);
                 }
                 break;
@@ -168,7 +170,7 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.JUMPING_BACKWARD:
                 {
-                    float newX = transform.localPosition.x + (isFacingRight ? -1 : 1) * walkSpeed * Time.deltaTime;
+                    float newX = transform.localPosition.x + (isFacingRight ? -1 : 1) * walkSpeed;
                     float newY;
                     float jumpTime = Time.time - jumpStartTime;
                     float jumpHeight = GetJumpHeight(jumpTime);
@@ -186,7 +188,7 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.JUMPING_FORWARD:
                 {
-                    float newX = transform.localPosition.x + (isFacingRight ? 1 : -1) * walkSpeed * Time.deltaTime;
+                    float newX = transform.localPosition.x + (isFacingRight ? 1 : -1) * walkSpeed;
                     float newY;
                     float jumpTime = Time.time - jumpStartTime;
                     float jumpHeight = GetJumpHeight(jumpTime);

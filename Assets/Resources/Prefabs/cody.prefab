@@ -100,15 +100,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 3
-  walkSpeed: 5
-  runSpeed: 12
-  airdashSpeed: 8
+  walkSpeed: 0.01
+  runSpeed: 0.02
+  airdashSpeed: 0.015
   maxHp: 1000
   maxMeter: 100
   currHp: 0
   currMeter: 0
   isFacingRight: 1
+  isJumping: 0
   hpBar: {fileID: 0}
+  state: 0
 --- !u!212 &212370995769891844
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -44,9 +44,35 @@ public class PlayerStateMachine : MonoBehaviour
     private void AddStates()
     {
         AddState<StandingState>();
-        AddState<WalkingForwardState>();
+        AddState<StandingBlockState>();
+        AddState<StandingAState>();
+        AddState<StandingBState>();
+        AddState<StandingCState>();
+        AddState<StandingDState>();
 
-        foreach(KeyValuePair<Type, PlayerState> state in states)
+        AddState<CrouchingState>();
+        AddState<CrouchingBlockState>();
+        AddState<CrouchingAState>();
+        AddState<CrouchingBState>();
+        AddState<CrouchingCState>();
+        AddState<CrouchingDState>();
+
+        AddState<WalkingForwardState>();
+        AddState<WalkingBackwardState>();
+        AddState<DashingForwardState>();
+        AddState<DashingBackwardState>();
+
+        AddState<JumpingUpState>();
+        AddState<JumpingBackwardState>();
+        AddState<JumpingForwardState>();
+        AddState<DashJumpingBackwardState>();
+        AddState<DashJumpingForwardState>();
+        AddState<JumpingAState>();
+        AddState<JumpingBState>();
+        AddState<JumpingCState>();
+        AddState<JumpingDState>();
+
+        foreach (KeyValuePair<Type, PlayerState> state in states)
         {
             state.Value.Initialize();
         }

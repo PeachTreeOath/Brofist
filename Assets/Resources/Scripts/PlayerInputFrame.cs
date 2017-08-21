@@ -7,6 +7,12 @@ public class PlayerInputFrame
 {
 
     private List<PlayerInputButton> inputList = new List<PlayerInputButton>();
+    private bool isFacingRight;
+
+    public PlayerInputFrame(bool isFacingRight)
+    {
+        this.isFacingRight = isFacingRight;
+    }
 
     public void AddToFrame(PlayerInputButton button)
     {
@@ -22,4 +28,21 @@ public class PlayerInputFrame
         return false;
     }
 
+    public bool IsForwardPressed()
+    {
+        if (isFacingRight && IsButtonPressed(PlayerInputButton.RIGHT))
+            return true;
+        if (!isFacingRight && IsButtonPressed(PlayerInputButton.LEFT))
+            return true;
+        return false;
+    }
+
+    public bool IsBackwardPressed()
+    {
+        if (isFacingRight && IsButtonPressed(PlayerInputButton.LEFT))
+            return true;
+        if (!isFacingRight && IsButtonPressed(PlayerInputButton.RIGHT))
+            return true;
+        return false;
+    }
 }

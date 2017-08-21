@@ -21,7 +21,7 @@ public class TimeManager : Singleton<TimeManager> {
 	void Update () {
         int currentFrameCount = (int)(Time.time / frameInMs);
         int framesSinceLastUpdate = currentFrameCount - lastFrameCount;
-        Debug.Log(framesSinceLastUpdate);
+
         for (int i = 0; i < framesSinceLastUpdate; i++)
         {
             foreach(FrameDependentEntity entity in entityList)

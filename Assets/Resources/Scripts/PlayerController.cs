@@ -12,22 +12,22 @@ public class PlayerController : FrameDependentEntity
     public float airdashSpeed;
     public int maxHp = 1000;
     public int maxMeter = 100;
+    public float jumpDuration = 1f;
+    public float groundHeight;
 
     [Header("State Variables")]
     public int currHp;
     public int currMeter;
     public bool isFacingRight;
     public bool isJumping;
+    [HideInInspector]
+    public PlayerInputFrame currentInputFrame; // Convenience var to track last input
 
     public GameObject hpBar;
     private Rigidbody2D body;
     [SerializeField]
-    private PlayerState state;
+    private PlayerStateMachine fsm;
     private Queue<PlayerInputFrame> inputBuffer = new Queue<PlayerInputFrame>(30); //TODO: Make this queue not delete inputs if performance becomes an issue
-    private PlayerInputFrame currentInputFrame; // Convenience var to track last input
-    private float jumpStartTime;
-    private float jumpDuration = 1f;
-    private float groundHeight;
 
     // Use this for initialization
     protected override void Start()
@@ -36,10 +36,16 @@ public class PlayerController : FrameDependentEntity
 
         GameManager.instance.RegisterPlayer(this);
         body = GetComponent<Rigidbody2D>();
-        state = PlayerState.STANDING;
+        fsm = gameObject.AddComponent<PlayerStateMachine>();
         currHp = maxHp;
         currMeter = maxMeter;
         groundHeight = transform.localPosition.y;
+        currentInputFrame = new PlayerInputFrame(isFacingRight);
+    }
+
+    void Update()
+    {
+        UpdateInputFrame();
     }
 
     // Update is called once per frame
@@ -52,6 +58,7 @@ public class PlayerController : FrameDependentEntity
         UpdateInputBuffer(); // Grab all inputs from player this frame and queue input buffer
         UpdateState(); // Change player state based on inputs
         UpdatePosition(); // Move player based on state if needed
+        currentInputFrame = new PlayerInputFrame(isFacingRight); // Create new input buffer for next frame
     }
 
     public void SetHpBar()
@@ -75,31 +82,37 @@ public class PlayerController : FrameDependentEntity
             currMeter = 0;
     }
 
+    /// <summary>
+    /// Save off player inputs in between frames for input leniency
+    /// </summary>
+    private void UpdateInputFrame()
+    {
+        if (Input.GetAxisRaw("Vertical" + id) > 0)
+            currentInputFrame.AddToFrame(PlayerInputButton.UP);
+        if (Input.GetAxisRaw("Vertical" + id) < 0)
+            currentInputFrame.AddToFrame(PlayerInputButton.DOWN);
+        if (Input.GetAxisRaw("Horizontal" + id) < 0)
+            currentInputFrame.AddToFrame(PlayerInputButton.LEFT);
+        if (Input.GetAxisRaw("Horizontal" + id) > 0)
+            currentInputFrame.AddToFrame(PlayerInputButton.RIGHT);
+        if (Input.GetButton("A" + id))
+            currentInputFrame.AddToFrame(PlayerInputButton.A);
+        if (Input.GetButton("B" + id))
+            currentInputFrame.AddToFrame(PlayerInputButton.B);
+        if (Input.GetButton("C" + id))
+            currentInputFrame.AddToFrame(PlayerInputButton.C);
+        if (Input.GetButton("D" + id))
+            currentInputFrame.AddToFrame(PlayerInputButton.D);
+        if (Input.GetButton("Swap" + id))
+            currentInputFrame.AddToFrame(PlayerInputButton.SWAP);
+    }
+
+    /// <summary>
+    /// Update the input buffer itself when the frame clock ticks
+    /// </summary>
     private void UpdateInputBuffer()
     {
-        PlayerInputFrame inputFrame = new PlayerInputFrame();
-
-        if (Input.GetAxisRaw("Vertical" + id) > 0)
-            inputFrame.AddToFrame(PlayerInputButton.UP);
-        if (Input.GetAxisRaw("Vertical" + id) < 0)
-            inputFrame.AddToFrame(PlayerInputButton.DOWN);
-        if (Input.GetAxisRaw("Horizontal" + id) < 0)
-            inputFrame.AddToFrame(PlayerInputButton.LEFT);
-        if (Input.GetAxisRaw("Horizontal" + id) > 0)
-            inputFrame.AddToFrame(PlayerInputButton.RIGHT);
-        if (Input.GetButton("A" + id))
-            inputFrame.AddToFrame(PlayerInputButton.A);
-        if (Input.GetButton("B" + id))
-            inputFrame.AddToFrame(PlayerInputButton.B);
-        if (Input.GetButton("C" + id))
-            inputFrame.AddToFrame(PlayerInputButton.C);
-        if (Input.GetButton("D" + id))
-            inputFrame.AddToFrame(PlayerInputButton.D);
-        if (Input.GetButton("Swap" + id))
-            inputFrame.AddToFrame(PlayerInputButton.SWAP);
-
-        inputBuffer.Enqueue(inputFrame);
-        currentInputFrame = inputFrame;
+        inputBuffer.Enqueue(currentInputFrame);
     }
 
     /// <summary>
@@ -107,55 +120,12 @@ public class PlayerController : FrameDependentEntity
     /// </summary>
     private void UpdateState()
     {
-        if (isJumping)
-        {
-            return;
-        }
-
-        if (currentInputFrame.IsButtonPressed(PlayerInputButton.UP) && currentInputFrame.IsButtonPressed(PlayerInputButton.RIGHT))
-        {
-            isJumping = true;
-            jumpStartTime = Time.time;
-
-            if (currentInputFrame.IsButtonPressed(PlayerInputButton.RIGHT))
-            {
-                if (isFacingRight)
-                    state = PlayerState.JUMPING_FORWARD;
-                else
-                    state = PlayerState.JUMPING_BACKWARD;
-            }
-            else if (currentInputFrame.IsButtonPressed(PlayerInputButton.LEFT))
-            {
-                if (isFacingRight)
-                    state = PlayerState.JUMPING_BACKWARD;
-                else
-                    state = PlayerState.JUMPING_FORWARD;
-            }
-            else
-                state = PlayerState.JUMPING_UP;
-        }
-        else if (currentInputFrame.IsButtonPressed(PlayerInputButton.RIGHT))
-        {
-            if (isFacingRight)
-                state = PlayerState.WALKING_FORWARD;
-            else
-                state = PlayerState.WALKING_BACKWARD;
-        }
-        else if (currentInputFrame.IsButtonPressed(PlayerInputButton.LEFT))
-        {
-            if (isFacingRight)
-                state = PlayerState.WALKING_BACKWARD;
-            else
-                state = PlayerState.WALKING_FORWARD;
-        }
-        else
-        {
-            state = PlayerState.STANDING;
-        }
+        fsm.UpdateFrame();
     }
 
     private void UpdatePosition()
     {
+        /*
         switch (state)
         {
             case PlayerState.STANDING:
@@ -245,6 +215,7 @@ public class PlayerController : FrameDependentEntity
             default:
                 break;
         }
+        */
     }
 
     private float GetJumpHeight(float time)

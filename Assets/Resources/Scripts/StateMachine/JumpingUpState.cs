@@ -22,9 +22,7 @@ public class JumpingUpState : JumpingState
 
     public override void EnterState()
     {
-        jumpStartTime = Time.time;
-
-        Debug.Log("Enter" + this.GetType() + " State");
+        base.EnterState();
     }
 
     public override void ExitState()

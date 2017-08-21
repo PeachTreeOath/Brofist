@@ -25,7 +25,7 @@ public class JumpingBackwardState : JumpingState
 
     public override void EnterState()
     {
-        Debug.Log("Enter" + this.GetType() + " State");
+        base.EnterState();
     }
 
     public override void ExitState()

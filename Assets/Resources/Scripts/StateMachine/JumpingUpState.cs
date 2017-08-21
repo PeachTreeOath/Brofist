@@ -2,18 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JumpingUpState : PlayerState
+public class JumpingUpState : JumpingState
 {
-    private float jumpStartTime;
 
-    public override void ExecuteInput()
+    public override bool ExecuteInput()
     {
-        Debug.Log("Input " + this.GetType() + " State");
+        if (base.ExecuteInput())
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public override void ExecuteFrame()
     {
-        Debug.Log("Update" + this.GetType() + " State");
+        base.ExecuteFrame();
     }
 
     public override void EnterState()

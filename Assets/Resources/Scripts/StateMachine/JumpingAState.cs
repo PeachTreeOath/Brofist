@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JumpingAState : PlayerState
+public class JumpingAState : JumpingState
 {
 
-    public override void ExecuteInput()
+    public override bool ExecuteInput()
     {
-        Debug.Log("Input " + this.GetType() + " State");
+        if (base.ExecuteInput())
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public override void ExecuteFrame()

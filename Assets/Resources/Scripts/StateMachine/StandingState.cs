@@ -5,53 +5,42 @@ using UnityEngine;
 public class StandingState : PlayerState
 {
 
-    public override void ExecuteInput()
+    public override bool ExecuteInput()
     {
         PlayerInputFrame currentInputFrame = player.currentInputFrame;
-        bool isFacingRight = player.isFacingRight;
 
-        if (currentInputFrame.IsButtonPressed(PlayerInputButton.UP) && currentInputFrame.IsButtonPressed(PlayerInputButton.RIGHT))
+        if (currentInputFrame.IsButtonPressed(PlayerInputButton.UP))
         {
-            if (currentInputFrame.IsButtonPressed(PlayerInputButton.RIGHT))
+            if (currentInputFrame.IsForwardPressed())
             {
-                if (isFacingRight)
-                    machine.ChangeState<JumpingForwardState>();
-                else
-                    machine.ChangeState<JumpingBackwardState>();
+                machine.ChangeState<JumpingForwardState>();
             }
-            else if (currentInputFrame.IsButtonPressed(PlayerInputButton.LEFT))
+            else if (currentInputFrame.IsBackwardPressed())
             {
-                if (isFacingRight)
-                    machine.ChangeState<JumpingBackwardState>();
-                else
-                    machine.ChangeState<JumpingForwardState>();
+                machine.ChangeState<JumpingBackwardState>();
             }
             else
                 machine.ChangeState<JumpingUpState>();
         }
-        else if (currentInputFrame.IsButtonPressed(PlayerInputButton.RIGHT))
+        else if (currentInputFrame.IsForwardPressed())
         {
-            if (isFacingRight)
-                machine.ChangeState<WalkingForwardState>();
-            else
-                machine.ChangeState<WalkingBackwardState>();
+            machine.ChangeState<WalkingForwardState>();
         }
-        else if (currentInputFrame.IsButtonPressed(PlayerInputButton.LEFT))
+        else if (currentInputFrame.IsBackwardPressed())
         {
-            if (isFacingRight)
-                machine.ChangeState<WalkingBackwardState>();
-            else
-                machine.ChangeState<WalkingForwardState>();
+            machine.ChangeState<WalkingBackwardState>();
         }
         else
         {
             machine.ChangeState<StandingState>();
         }
+
+        return false;
     }
 
     public override void ExecuteFrame()
     {
-      //  Debug.Log("Update Idle State");
+
     }
 
     public override void EnterState()

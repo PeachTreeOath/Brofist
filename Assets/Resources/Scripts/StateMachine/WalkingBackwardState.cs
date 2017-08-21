@@ -5,12 +5,14 @@ using UnityEngine;
 public class WalkingBackwardState : PlayerState
 {
 
-    public override void ExecuteInput()
+    public override bool ExecuteInput()
     {
-        if (!player.currentInputFrame.IsBackwardPressed())
+        if (!player.currentInputFrame.IsOnlyBackwardPressed())
         {
             machine.ChangeState<StandingState>();
         }
+
+        return false;
     }
 
     public override void ExecuteFrame()

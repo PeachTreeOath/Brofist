@@ -5,9 +5,9 @@ using UnityEngine;
 public class CrouchingDState : PlayerState
 {
 
-    public override void ExecuteInput()
+    public override bool ExecuteInput()
     {
-        Debug.Log("Input " + this.GetType() + " State");
+        Debug.Log("Input " + this.GetType() + " State"); return false;
     }
 
     public override void ExecuteFrame()

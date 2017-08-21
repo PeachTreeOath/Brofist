@@ -218,11 +218,4 @@ public class PlayerController : FrameDependentEntity
         */
     }
 
-    private float GetJumpHeight(float time)
-    {
-        float a = 10f;
-        float diff = time - 0.5f;
-        float height = (-a * diff * diff) + 3f;
-        return Mathf.Clamp(height, 0, 100);
-    }
 }

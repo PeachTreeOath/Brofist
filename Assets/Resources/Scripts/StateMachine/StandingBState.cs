@@ -5,9 +5,10 @@ using UnityEngine;
 public class StandingBState : PlayerState
 {
 
-    public override void ExecuteInput()
+    public override bool ExecuteInput()
     {
         Debug.Log("Input " + this.GetType() + " State");
+        return false;
     }
 
     public override void ExecuteFrame()

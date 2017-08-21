@@ -5,9 +5,14 @@ using UnityEngine;
 public class JumpingBState : PlayerState
 {
 
-    public override void ExecuteInput()
+    public override bool ExecuteInput()
     {
-        Debug.Log("Input " + this.GetType() + " State");
+        if(base.ExecuteInput())
+        {
+            return true;
+        }
+        
+        return false;
     }
 
     public override void ExecuteFrame()

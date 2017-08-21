@@ -19,12 +19,29 @@ public class PlayerInputFrame
         inputList.Add(button);
     }
 
+    /// <summary>
+    /// Checks if button is one of the buttons pressed this frame.
+    /// </summary>
+    /// <param name="button"></param>
+    /// <returns></returns>
     public bool IsButtonPressed(PlayerInputButton button)
     {
-        if(inputList.Contains(button))
-        {
+        if (inputList.Contains(button))
             return true;
-        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Checks if this is the ONLY button pressed this frame.
+    /// </summary>
+    /// <param name="button"></param>
+    /// <returns></returns>
+    public bool IsOnlyButtonPressed(PlayerInputButton button)
+    {
+        if (inputList.Count == 1 && IsButtonPressed(button))
+            return true;
+
         return false;
     }
 
@@ -45,4 +62,24 @@ public class PlayerInputFrame
             return true;
         return false;
     }
+
+    public bool IsOnlyForwardPressed()
+    {
+        if (isFacingRight && IsOnlyButtonPressed(PlayerInputButton.RIGHT))
+            return true;
+        if (!isFacingRight && IsOnlyButtonPressed(PlayerInputButton.LEFT))
+            return true;
+        return false;
+    }
+
+    public bool IsOnlyBackwardPressed()
+    {
+        if (isFacingRight && IsOnlyButtonPressed(PlayerInputButton.LEFT))
+            return true;
+        if (!isFacingRight && IsOnlyButtonPressed(PlayerInputButton.RIGHT))
+            return true;
+        return false;
+    }
+
+
 }

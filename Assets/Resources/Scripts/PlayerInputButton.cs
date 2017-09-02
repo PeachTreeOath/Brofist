@@ -15,5 +15,10 @@ public enum PlayerInputButton
     B,
     C,
     D,
-    SWAP
+    SWAP,
+    A_RELEASE,
+    B_RELEASE,
+    C_RELEASE,
+    D_RELEASE,
+    SWAP_RELEASE
 }

@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114234934910993312}
   - component: {fileID: 61560826888000746}
   - component: {fileID: 50583744250623574}
+  - component: {fileID: 95998138908622736}
   m_Layer: 0
   m_Name: ky
   m_TagString: Untagged
@@ -88,6 +89,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.44, y: 2.5}
   m_EdgeRadius: 0
+--- !u!95 &95998138908622736
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1081824043333778}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114234934910993312
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -105,12 +123,15 @@ MonoBehaviour:
   airdashSpeed: 0.15
   maxHp: 1000
   maxMeter: 100
+  jumpDuration: 1
+  groundHeight: 0
+  attack5A: {fileID: 114238849030269912, guid: 7adeb81896390804ea2c9cc32428c318, type: 2}
   currHp: 0
   currMeter: 0
   isFacingRight: 1
   isJumping: 0
   hpBar: {fileID: 0}
-  state: 0
+  fsm: {fileID: 0}
 --- !u!212 &212483586158845032
 SpriteRenderer:
   m_ObjectHideFlags: 1

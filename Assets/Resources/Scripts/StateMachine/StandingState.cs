@@ -8,6 +8,7 @@ public class StandingState : PlayerState
     public override bool ExecuteInput()
     {
         PlayerInputFrame currentInputFrame = player.currentInputFrame;
+        InputBuffer inputBuffer = player.inputBuffer;
 
         if (currentInputFrame.IsButtonPressed(PlayerInputButton.UP))
         {
@@ -29,6 +30,10 @@ public class StandingState : PlayerState
         else if (currentInputFrame.IsBackwardPressed())
         {
             machine.ChangeState<WalkingBackwardState>();
+        }
+        else if(inputBuffer.IsButtonPressed(PlayerInputButton.A))
+        {
+            machine.ChangeState<StandingAState>();
         }
         else
         {

@@ -13,6 +13,7 @@ public class TimeManager : Singleton<TimeManager> {
 
 	// Use this for initialization
 	void Start () {
+        Application.targetFrameRate = 60;
         gameStartTime = Time.time;
         frameInMs = 1 / (float)fps;
 	}

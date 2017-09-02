@@ -15,7 +15,10 @@ public class PlayerController : FrameDependentEntity
     public float jumpDuration = 1f;
     public float groundHeight;
 
-    [Header("State Variables")]
+    [Header("Move List")]
+    public AttackData attack5A;
+
+    [Header("Debug State Variables")]
     public int currHp;
     public int currMeter;
     public bool isFacingRight;
@@ -25,9 +28,10 @@ public class PlayerController : FrameDependentEntity
 
     public GameObject hpBar;
     private Rigidbody2D body;
+    private SpriteRenderer spriteRenderer;
     [SerializeField]
     private PlayerStateMachine fsm;
-    private Queue<PlayerInputFrame> inputBuffer = new Queue<PlayerInputFrame>(30); //TODO: Make this queue not delete inputs if performance becomes an issue
+    public InputBuffer inputBuffer; //TODO: Consolidate PlayerInputFrame api into input buffer
 
     // Use this for initialization
     protected override void Start()
@@ -36,10 +40,12 @@ public class PlayerController : FrameDependentEntity
 
         GameManager.instance.RegisterPlayer(this);
         body = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         fsm = gameObject.AddComponent<PlayerStateMachine>();
         currHp = maxHp;
         currMeter = maxMeter;
         groundHeight = transform.localPosition.y;
+        inputBuffer = new InputBuffer();
         currentInputFrame = new PlayerInputFrame(isFacingRight);
     }
 
@@ -57,7 +63,6 @@ public class PlayerController : FrameDependentEntity
         }
         UpdateInputBuffer(); // Grab all inputs from player this frame and queue input buffer
         UpdateState(); // Change player state based on inputs
-        UpdatePosition(); // Move player based on state if needed
         currentInputFrame = new PlayerInputFrame(isFacingRight); // Create new input buffer for next frame
     }
 
@@ -80,6 +85,11 @@ public class PlayerController : FrameDependentEntity
         currMeter -= meter;
         if (currMeter < 0)
             currMeter = 0;
+    }
+
+    public void ChangeSprite(Sprite newSprite)
+    {
+        spriteRenderer.sprite = newSprite;
     }
 
     /// <summary>
@@ -105,6 +115,16 @@ public class PlayerController : FrameDependentEntity
             currentInputFrame.AddToFrame(PlayerInputButton.D);
         if (Input.GetButton("Swap" + id))
             currentInputFrame.AddToFrame(PlayerInputButton.SWAP);
+        if (Input.GetButtonUp("A" + id))
+            currentInputFrame.AddToFrame(PlayerInputButton.A_RELEASE);
+        if (Input.GetButtonUp("B" + id))
+            currentInputFrame.AddToFrame(PlayerInputButton.B_RELEASE);
+        if (Input.GetButtonUp("C" + id))
+            currentInputFrame.AddToFrame(PlayerInputButton.C_RELEASE);
+        if (Input.GetButtonUp("D" + id))
+            currentInputFrame.AddToFrame(PlayerInputButton.D_RELEASE);
+        if (Input.GetButtonUp("Swap" + id))
+            currentInputFrame.AddToFrame(PlayerInputButton.SWAP_RELEASE);
     }
 
     /// <summary>
@@ -121,101 +141,6 @@ public class PlayerController : FrameDependentEntity
     private void UpdateState()
     {
         fsm.UpdateFrame();
-    }
-
-    private void UpdatePosition()
-    {
-        /*
-        switch (state)
-        {
-            case PlayerState.STANDING:
-                break;
-            case PlayerState.BLOCKING:
-                break;
-            case PlayerState.WALKING_BACKWARD:
-                {
-                    float delta = (isFacingRight ? -1 : 1) * walkSpeed;
-                    transform.position += new Vector3(delta, 0);
-                }
-                break;
-            case PlayerState.WALKING_FORWARD:
-                {
-                    float delta = (isFacingRight ? 1 : -1) * walkSpeed;
-                    transform.position += new Vector3(delta, 0);
-                }
-                break;
-            case PlayerState.DASHING_BACK:
-                break;
-            case PlayerState.DASHING_FORWARD:
-                break;
-            case PlayerState.JUMPING_UP:
-                {
-                    float newX = transform.localPosition.x;
-                    float newY;
-                    float jumpTime = Time.time - jumpStartTime;
-                    float jumpHeight = GetJumpHeight(jumpTime);
-                    if (jumpTime >= jumpDuration)
-                    {
-                        isJumping = false;
-                        newY = groundHeight;
-                    }
-                    else
-                    {
-                        newY = groundHeight + jumpHeight;
-                    }
-                    transform.localPosition = new Vector2(newX, newY);
-                }
-                break;
-            case PlayerState.JUMPING_BACKWARD:
-                {
-                    float newX = transform.localPosition.x + (isFacingRight ? -1 : 1) * walkSpeed;
-                    float newY;
-                    float jumpTime = Time.time - jumpStartTime;
-                    float jumpHeight = GetJumpHeight(jumpTime);
-                    if (jumpTime >= jumpDuration)
-                    {
-                        isJumping = false;
-                        newY = groundHeight;
-                    }
-                    else
-                    {
-                        newY = groundHeight + jumpHeight;
-                    }
-                    transform.localPosition = new Vector2(newX, newY);
-                }
-                break;
-            case PlayerState.JUMPING_FORWARD:
-                {
-                    float newX = transform.localPosition.x + (isFacingRight ? 1 : -1) * walkSpeed;
-                    float newY;
-                    float jumpTime = Time.time - jumpStartTime;
-                    float jumpHeight = GetJumpHeight(jumpTime);
-                    if (jumpTime >= jumpDuration)
-                    {
-                        isJumping = false;
-                        newY = groundHeight;
-                    }
-                    else
-                    {
-                        newY = groundHeight + jumpHeight;
-                    }
-                    transform.localPosition = new Vector2(newX, newY);
-                }
-                break;
-            case PlayerState.DASH_JUMPING_BACK:
-                break;
-            case PlayerState.DASH_JUMPING_FORWARD:
-                break;
-            case PlayerState.AIRDASHING_BACK:
-                break;
-            case PlayerState.AIRDASHING_FORWARD:
-                break;
-            case PlayerState.ATTACKING:
-                break;
-            default:
-                break;
-        }
-        */
     }
 
 }

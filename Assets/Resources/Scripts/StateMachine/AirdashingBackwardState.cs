@@ -7,7 +7,7 @@ public class AirdashingBackwardState : PlayerState
 
     public override bool ExecuteInput()
     {
-        Debug.Log("Input " + this.GetType() + " State"); return false;
+        Debug.Log("Input " + this.GetType() + " State");
 
         return false;
     }
